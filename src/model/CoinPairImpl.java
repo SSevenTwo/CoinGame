@@ -7,6 +7,11 @@ public class CoinPairImpl implements CoinPair {
 	
 	private CoinImpl coin1;
 	private CoinImpl coin2;
+	
+	public CoinPairImpl() {
+		this.coin1 = new CoinImpl(1);
+		this.coin2 = new CoinImpl(2);
+	}
 
 	@Override
 	public Coin getCoin1() {

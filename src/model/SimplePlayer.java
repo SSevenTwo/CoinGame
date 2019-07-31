@@ -19,7 +19,6 @@ public class SimplePlayer implements Player {
 		this.points = initialPoints;
 		this.bet = 0;
 		this.betType = null;
-		
 	}
 
 	@Override
@@ -78,7 +77,6 @@ public class SimplePlayer implements Player {
 	public void resetBet() {
 		this.bet = 0;
 		this.betType = betType.NO_BET;
-		
 	}
 
 	@Override
@@ -89,7 +87,12 @@ public class SimplePlayer implements Player {
 	@Override
 	public void setResult(CoinPair coinPair) {
 		this.coin = coinPair;
-		
+	}
+	
+	@Override
+	public String toString() {
+		return "Player: id=" + this.id + ", name="+ this.name + ", bet=" + this.bet +
+				", betType=" + this.betType +", points=" + this.points + ", RESULT .." + this.coin;
 	}
 
 }

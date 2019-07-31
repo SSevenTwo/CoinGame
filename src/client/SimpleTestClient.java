@@ -1,6 +1,9 @@
 package client;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import model.GameEngineImpl;
@@ -29,6 +32,19 @@ public class SimpleTestClient
 
    public static void main(String args[])
    {
+	   //Configure logger to show FINE levels and above.
+	   try {
+		    FileInputStream fis =  new FileInputStream("p.properties");
+		    LogManager.getLogManager().readConfiguration(fis);
+		    logger.setLevel(Level.FINE);
+		    logger.addHandler(new java.util.logging.ConsoleHandler());
+		    logger.setUseParentHandlers(false);
+		    fis.close();
+		    } 
+		    catch(IOException e) {
+		    e.printStackTrace();
+		    }
+	   
       final GameEngine gameEngine = new GameEngineImpl();
 
       // call method in Validator.jar to test *structural* correctness
@@ -60,10 +76,16 @@ public class SimpleTestClient
       gameEngine.spinSpinner(100, 1000, 200, 50, 500, 25);
 
       // TODO reset bets for next round if you were playing again
+      for(Player player:players) {
+    	  player.resetBet();
+      }
    }
 }
 
 //Notes to self:
 //31.07.2019
-//Implemented interface classes except for GameEngine. Not sure if the hash and equal codes are correct.
-//Not sure if creaating randomenum class is allowed.
+//Not sure if the hash and equal codes are correct.
+//Not sure if creating randomenum class is allowed.
+//Can we create new methods?
+//What should happen if the player goes -ve?
+//Remove unecessary references to gameengine in callback signatures

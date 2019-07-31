@@ -17,7 +17,12 @@ public enum BetType
          @Override
          public void applyWinLoss(Player player, CoinPair spinnerResult)
          {
-            // TODO implementation
+            if(player.getResult().getCoin1().equals(spinnerResult.getCoin1())) {
+            	player.setPoints(player.getPoints() + player.getBet());
+            }
+            else {
+            	player.setPoints(player.getPoints() - player.getBet());
+            }
          }
       },
       
@@ -26,7 +31,12 @@ public enum BetType
           @Override
           public void applyWinLoss(Player player, CoinPair spinnerResult)
           {
-             // TODO implementation
+        	  if(player.getResult().getCoin2().equals(spinnerResult.getCoin2())) {
+              	player.setPoints(player.getPoints() + player.getBet());
+              }
+              else {
+              	player.setPoints(player.getPoints() - player.getBet());
+              }
           }
        },
       
@@ -35,7 +45,12 @@ public enum BetType
            @Override
            public void applyWinLoss(Player player, CoinPair spinnerResult)
            {
-              // TODO implementation
+        	   if(player.getResult().equals(spinnerResult)) {
+               	player.setPoints(player.getPoints() + 2*player.getBet());
+               }
+               else {
+               	player.setPoints(player.getPoints() - 2*player.getBet());
+               }
            }
         },
       
@@ -44,12 +59,10 @@ public enum BetType
           @Override
           public void applyWinLoss(Player player, CoinPair spinnerResult)
           {
-             // TODO implementation
+             //No Action Required
           }
        };
       
-      
-      // TODO finish this class with other enum constants
    
       /**
        * This method is to be overridden for each bet type<br>
