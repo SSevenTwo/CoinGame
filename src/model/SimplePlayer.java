@@ -76,7 +76,7 @@ public class SimplePlayer implements Player {
 	@Override
 	public void resetBet() {
 		this.bet = 0;
-		this.betType = betType.NO_BET;
+		this.betType = BetType.NO_BET;
 	}
 
 	@Override

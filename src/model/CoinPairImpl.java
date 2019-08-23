@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 import model.interfaces.Coin;
 import model.interfaces.CoinPair;
 
@@ -8,22 +10,26 @@ public class CoinPairImpl implements CoinPair {
 	private CoinImpl coin1;
 	private CoinImpl coin2;
 	
+	//Constructor for CoinPair
 	public CoinPairImpl() {
 		this.coin1 = new CoinImpl(1);
 		this.coin2 = new CoinImpl(2);
 	}
 
 	@Override
+	//Returns coin 1
 	public Coin getCoin1() {
 		return this.coin1;
 	}
 
 	@Override
+	//Returns coin 2
 	public Coin getCoin2() {
 		return this.coin2;
 	}
 
 	@Override
+	// Compares the two faces of the coins to check if they are equal
 	public boolean equals(CoinPair coinPair) {
 		if(this.coin1.equals(coinPair.getCoin1()) && this.coin2.equals(coinPair.getCoin2())){
 			return true;
@@ -32,40 +38,28 @@ public class CoinPairImpl implements CoinPair {
 	}
 	
 	@Override
-	public String toString() {
-		return this.coin1 + ", " + this.coin2;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((coin1 == null) ? 0 : coin1.hashCode());
-		result = prime * result + ((coin2 == null) ? 0 : coin2.hashCode());
-		return result;
-	}
-
-	@Override
+	// Ensures that the object is actually a coinpair first
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CoinPairImpl other = (CoinPairImpl) obj;
-		if (coin1 == null) {
-			if (other.coin1 != null)
-				return false;
-		} else if (!coin1.equals(other.coin1))
-			return false;
-		if (coin2 == null) {
-			if (other.coin2 != null)
-				return false;
-		} else if (!coin2.equals(other.coin2))
-			return false;
-		return true;
+		if(obj instanceof CoinPair) {
+			return this.equals(obj);
+		}
+		else return false;
 	}
+	
+	@Override
+	// Return details of coinpair as string
+	public String toString() {
+		String coin = String.format("%s, %s", this.coin1,this.coin2); 
+		return coin;
+	}
+
+	@Override
+	// Creates hashcode based on the faces of the two coins
+	public int hashCode() {
+		return Objects.hash(coin1.getFace(),coin2.getFace());
+	}
+
+
 	
 	
 

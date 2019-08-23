@@ -1,8 +1,11 @@
 package model;
 
-import java.util.Random;
-
 import model.enumeration.RandomEnumGenerator;
+
+import java.util.Objects;
+
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import model.enumeration.CoinFace;
 import model.interfaces.Coin;
 
@@ -11,6 +14,7 @@ public class CoinImpl implements Coin {
 	private int number;
 	private CoinFace face;
 	
+	//Constructor of coins. Generates a random face for the coin.
 	public CoinImpl(int number) {
 		this.number = number;
 		this.face = RandomEnumGenerator.randomEnum(CoinFace.class);
@@ -18,16 +22,19 @@ public class CoinImpl implements Coin {
 	}
 
 	@Override
+	//Returns coin number
 	public int getNumber() {
 		return this.number;
 	}
 
 	@Override
+	//Returns face of coin
 	public CoinFace getFace() {
 		return this.face;
 	}
 
 	@Override
+	// Flips the coin face to the opposite face
 	public void flip() {
 		if(this.face.equals(CoinFace.HEADS)) {
 			this.face = CoinFace.TAILS;
@@ -37,6 +44,7 @@ public class CoinImpl implements Coin {
 	}
 	
 	@Override
+	//Compares two coins by face and returns true if they match
 	public boolean equals(Coin coin) {
 		if(this.face.equals(coin.getFace())) {
 			return true;
@@ -44,32 +52,32 @@ public class CoinImpl implements Coin {
 		else return false;
 	}
 
-	
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((face == null) ? 0 : face.hashCode());
-		return result;
-	}
-
-	@Override
+	// Checks whether the object is a coin then compares it
 	public boolean equals(Object coin) {
-		if (this == coin)
-			return true;
-		if (coin == null)
-			return false;
-		if (getClass() != coin.getClass())
-			return false;
-		CoinImpl other = (CoinImpl) coin;
-		if (face != other.face)
-			return false;
-		return true;
+		if(coin instanceof CoinImpl) {
+			this.equals(coin);
+		}
+		return false;
 	}
 	
 	@Override
+	// Creates hashcode based on the coin face
+	public int hashCode() {
+		return Objects.hash(this.getFace());
+	}
+	
+	@Override
+	// Returns details of coin as a string
 	public String toString() {
-		return "Coin " + this.number + ": " + this.face;
+		String coin = String.format("Coin %d: %s", this.getNumber(), this.titleConvert(this.getFace())); 
+		return coin;
+	}
+	
+	// Converts coin faces to title case
+	private String titleConvert(CoinFace coinFace) {
+		String title = "" + coinFace;
+		return StringUtils.capitalize(title.toLowerCase());
 	}
 
 

@@ -4,17 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import model.enumeration.BetType;
-import model.interfaces.Coin;
 import model.interfaces.CoinPair;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
-import view.GameEngineCallbackImpl;
 import view.interfaces.GameEngineCallback;
 
 public class GameEngineImpl implements GameEngine {
 
-	private ArrayList<Player> players;
-	private ArrayList<GameEngineCallback> gameEngines;
+	private Collection<Player> players;
+	private Collection<GameEngineCallback> gameEngines;
 
 	public GameEngineImpl() {
 		this.players = new ArrayList<Player>();
@@ -22,66 +20,41 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
+	//Spins the Player's coin
 	public void spinPlayer(Player player, int initialDelay1, int finalDelay1, int delayIncrement1, int initialDelay2,
 			int finalDelay2, int delayIncrement2) throws IllegalArgumentException {
 		
-		//this.spin(player, initialDelay1, finalDelay1, delayIncrement1);
-		CoinPairImpl coins = new CoinPairImpl();
-
-		for (int i = initialDelay1; i < finalDelay1; i += delayIncrement1) {
-			for (GameEngineCallback game : gameEngines) {
-				game.playerCoinUpdate(player, coins.getCoin1(), this);
-				game.playerCoinUpdate(player, coins.getCoin2(), this);
-			}
-			coins.getCoin1().flip();
-			coins.getCoin2().flip();
-		}
-		
-		//Possibly move the below methods to the above method. Depending on usage of game engines array.
-		for (GameEngineCallback game : gameEngines) {
-			game.playerResult(player, coins, this);
-			player.setResult(coins);
-		}
+		this.spinPlayerOrSpinner(player, initialDelay1, finalDelay1, delayIncrement1, initialDelay2, finalDelay2, delayIncrement2);
 
 	}
 
 	@Override
+	//Spins the spinners coin
 	public void spinSpinner(int initialDelay1, int finalDelay1, int delayIncrement1, int initialDelay2, int finalDelay2,
 			int delayIncrement2) throws IllegalArgumentException {
 		
-		CoinPairImpl coins = new CoinPairImpl();
-
-		for (int i = initialDelay1; i < finalDelay1; i += delayIncrement1) {
-			for (GameEngineCallback game : gameEngines) {
-				game.spinnerCoinUpdate(coins.getCoin1(), this);
-				game.spinnerCoinUpdate(coins.getCoin2(), this);
-			}
-			coins.getCoin1().flip();
-			coins.getCoin2().flip();
-		}
-
-		for (GameEngineCallback game : gameEngines) {
-			this.applyBetResults(coins);
-			game.spinnerResult(coins, this);
-		}
+		this.spinPlayerOrSpinner(null, initialDelay1, finalDelay1, delayIncrement1, initialDelay2, finalDelay2, delayIncrement2);
 
 	}
 
 	@Override
+	// Apples the wins or losses to each player in the game based on their bet type
 	public void applyBetResults(CoinPair spinnerResult) {
-		for(Player player:this.players) {
+		for (Player player : this.players) {
 			player.getBetType().applyWinLoss(player, spinnerResult);
 		}
-
 	}
 
 	@Override
+	//Adds player to the collection
 	public void addPlayer(Player player) {
+		// Removes any players with the same unique player ID from the collection first.
+		this.removePlayer(player);
 		players.add(player);
-
 	}
 
 	@Override
+	//Returns the player that matches the input id
 	public Player getPlayer(String id) {
 		for (Player player : this.players) {
 			if (player.getPlayerId() == id) {
@@ -92,6 +65,7 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
+	//Removes the matching player
 	public boolean removePlayer(Player player) {
 		for (Player tempPlayer : this.players) {
 			if (player.getPlayerId() == tempPlayer.getPlayerId()) {
@@ -103,12 +77,13 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
+	//Adds a game engine callback object to the collection
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		this.gameEngines.add(gameEngineCallback);
-
 	}
 
 	@Override
+	//Removes a matching game engine callback object
 	public boolean removeGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		for (GameEngineCallback game : this.gameEngines) {
 			if (game.equals(gameEngineCallback)) {
@@ -120,49 +95,93 @@ public class GameEngineImpl implements GameEngine {
 	}
 
 	@Override
+	// Returns the players collection
 	public Collection<Player> getAllPlayers() {
-		return this.players;
+		
+		return new ArrayList<>(this.players);
 	}
 
 	@Override
+	//Places the bet for a specific player
 	public boolean placeBet(Player player, int bet, BetType betType) {
-		if(player.setBet(bet)) {
+		if (player.setBet(bet)) {
 			player.setBetType(betType);
 			return true;
-		}
-		else {
+		} else {
 			player.resetBet();
 			return false;
 		}
-		
 	}
-
-	/*
-	public void spin(Object obj, int initialDelay1, int finalDelay1, int delayIncrement1) {
+	
+	//Spins the player or spinner based on which method calls this method
+	private void spinPlayerOrSpinner(Player player, int initialDelay1, int finalDelay1, int delayIncrement1, int initialDelay2,
+			int finalDelay2, int delayIncrement2){
+		
+		//Checks that the delay are valid
+		this.checkValidityOfDelay(initialDelay1, finalDelay1, delayIncrement1, initialDelay2, finalDelay2, delayIncrement2);
+		
+		//Checks whether the caller of the method is a spinner or a player
+		boolean isSpinner = true;
+		if (!(player==null)) {
+			isSpinner = false;
+		}
+		
 		CoinPairImpl coins = new CoinPairImpl();
-
+		
 		for (int i = initialDelay1; i < finalDelay1; i += delayIncrement1) {
 			for (GameEngineCallback game : gameEngines) {
-				if (obj instanceof SimplePlayer) {
-					game.playerCoinUpdate((Player) obj, coins.getCoin1(), this);
-					game.playerCoinUpdate((Player) obj, coins.getCoin2(), this);
-				} else {
-					game.spinnerCoinUpdate(coins.getCoin1(), this);
-					game.spinnerCoinUpdate(coins.getCoin2(), this);
-				}
 				coins.getCoin1().flip();
 				coins.getCoin2().flip();
-			}
-
-			for (GameEngineCallback game : gameEngines) {
-				if (obj instanceof SimplePlayer) {
-					game.playerResult((Player) obj, coins, this);
-				} else {
-					game.spinnerResult(coins, this);
+				if(isSpinner) {
+				game.spinnerCoinUpdate(coins.getCoin1(), this);
+				game.spinnerCoinUpdate(coins.getCoin2(), this);
+				try {
+					Thread.sleep(i);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				}
+				else {
+					game.playerCoinUpdate(player, coins.getCoin1(), this);
+					game.playerCoinUpdate(player, coins.getCoin2(), this);
+					try {
+						Thread.sleep(i);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
-
 		}
-
-	}*/
+		
+		//Applies the player results or the bet results dependent on the caller of the method
+		for (GameEngineCallback game : gameEngines) {
+			if(isSpinner) {
+			this.applyBetResults(coins);
+			game.spinnerResult(coins, this);
+			}
+			else {
+				game.playerResult(player, coins, this);
+				player.setResult(coins);
+				
+			}
+		}
+		
+	}
+	
+	//Checks that the delay are valid. If not throw exception.
+	private void checkValidityOfDelay(int initialDelay1, int finalDelay1, int delayIncrement1, int initialDelay2,
+			int finalDelay2, int delayIncrement2) throws IllegalArgumentException {
+		
+		if( initialDelay1 < 0 || finalDelay1 < 0 || delayIncrement1 < 0 ||
+				initialDelay2 < 0 || finalDelay2 < 0 || delayIncrement2 < 0) {
+			throw new IllegalArgumentException("Error: Delay must be more than 0.");
+		}
+		if(finalDelay1<initialDelay1 || finalDelay2 < initialDelay2) {
+			throw new IllegalArgumentException("Error: Initial delay must be larger than final delay.");
+		}
+		if(delayIncrement1 > (finalDelay1 - initialDelay1) || delayIncrement2 > (finalDelay2 - initialDelay2)) {
+			throw new IllegalArgumentException("Error: Delay increment must not be larger than the difference of "
+					+ "final and initial delays.");
+		}
+	}
 }
