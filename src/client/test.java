@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -92,15 +93,15 @@ public class test {
 	      }
 	      
 	      //Testing unmodifiable collection of players
-	      Collection<Player> poo = gameEngine.getAllPlayers();
-	      poo.add(new SimplePlayer("7", "The Blade Master", 10000));
-	      for(Player poop: poo) {
-	    	  System.out.println(poop);
+	      ArrayList<Player> tested = (ArrayList<Player>) gameEngine.getAllPlayers();
+	      tested.add(new SimplePlayer("7", "The Blade Master", 10000));
+	      for(Player test: tested) {
+	    	  System.out.println(test);
 	      }
 	      
 	      System.out.println("AROOOOOOOOOOOOOO:");
-	      for(Player poopy: gameEngine.getAllPlayers()) {
-	    	  System.out.println(poopy);
+	      for(Player testo: gameEngine.getAllPlayers()) {
+	    	  System.out.println(testo);
 	      }
          
 	      

@@ -21,8 +21,6 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 	private static final Logger logger = Logger.getLogger(GameEngineCallback.class.getName());
 
 	public GameEngineCallbackImpl() {
-		// NOTE need to also set the console to FINE in
-		// %JRE_HOME%\lib\logging.properties
 		logger.setLevel(Level.FINE);
 	}
 
@@ -34,7 +32,6 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 	public void playerResult(Player player, CoinPair coinPair, GameEngine engine) {
 		// final results logged at Level.INFO
 		logger.log(Level.INFO, player.getPlayerName() + ", final result: " + coinPair);
-		// TODO: complete this method to log results
 	}
 
 	@Override

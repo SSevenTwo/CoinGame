@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import model.enumeration.BetType;
 import model.interfaces.CoinPair;
@@ -11,9 +12,10 @@ import view.interfaces.GameEngineCallback;
 
 public class GameEngineImpl implements GameEngine {
 
-	private Collection<Player> players;
-	private Collection<GameEngineCallback> gameEngines;
+	private List<Player> players;
+	private List<GameEngineCallback> gameEngines;
 
+	//Constructor of GameEngine
 	public GameEngineImpl() {
 		this.players = new ArrayList<Player>();
 		this.gameEngines = new ArrayList<GameEngineCallback>();
@@ -98,7 +100,7 @@ public class GameEngineImpl implements GameEngine {
 	// Returns the players collection
 	public Collection<Player> getAllPlayers() {
 		
-		return new ArrayList<>(this.players);
+		return new ArrayList<Player>(this.players);
 	}
 
 	@Override
