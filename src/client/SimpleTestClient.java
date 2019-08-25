@@ -83,9 +83,5 @@ public class SimpleTestClient
 }
 
 //Notes to self:
-//31.07.2019
-//Not sure if the hash and equal codes are correct.
-//Not sure if creating RandomEnum class is allowed.
 //Can we create new methods?
 //What should happen if the player goes -ve?
-//Remove unnecessary references to GameEngine in callback signatures

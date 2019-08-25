@@ -26,7 +26,8 @@ public class GameEngineImpl implements GameEngine {
 	public void spinPlayer(Player player, int initialDelay1, int finalDelay1, int delayIncrement1, int initialDelay2,
 			int finalDelay2, int delayIncrement2) throws IllegalArgumentException {
 		
-		this.spinPlayerOrSpinner(player, initialDelay1, finalDelay1, delayIncrement1, initialDelay2, finalDelay2, delayIncrement2);
+		this.spinPlayerOrSpinner(player, initialDelay1, finalDelay1, delayIncrement1, 
+				initialDelay2, finalDelay2, delayIncrement2);
 
 	}
 
@@ -35,7 +36,8 @@ public class GameEngineImpl implements GameEngine {
 	public void spinSpinner(int initialDelay1, int finalDelay1, int delayIncrement1, int initialDelay2, int finalDelay2,
 			int delayIncrement2) throws IllegalArgumentException {
 		
-		this.spinPlayerOrSpinner(null, initialDelay1, finalDelay1, delayIncrement1, initialDelay2, finalDelay2, delayIncrement2);
+		this.spinPlayerOrSpinner(null, initialDelay1, finalDelay1, delayIncrement1, 
+				initialDelay2, finalDelay2, delayIncrement2);
 
 	}
 
@@ -116,11 +118,12 @@ public class GameEngineImpl implements GameEngine {
 	}
 	
 	//Spins the player or spinner based on which method calls this method
-	private void spinPlayerOrSpinner(Player player, int initialDelay1, int finalDelay1, int delayIncrement1, int initialDelay2,
-			int finalDelay2, int delayIncrement2){
+	private void spinPlayerOrSpinner(Player player, int initialDelay1, int finalDelay1, int delayIncrement1, 
+			int initialDelay2, int finalDelay2, int delayIncrement2){
 		
 		//Checks that the delay are valid
-		this.checkValidityOfDelay(initialDelay1, finalDelay1, delayIncrement1, initialDelay2, finalDelay2, delayIncrement2);
+		this.checkValidityOfDelay(initialDelay1, finalDelay1, delayIncrement1, 
+				initialDelay2, finalDelay2, delayIncrement2);
 		
 		//Checks whether the caller of the method is a spinner or a player
 		boolean isSpinner = true;
@@ -128,45 +131,30 @@ public class GameEngineImpl implements GameEngine {
 			isSpinner = false;
 		}
 		
+		//Creates a coin pair and spins it
 		CoinPairImpl coins = new CoinPairImpl();
-		
 		for (int i = initialDelay1; i < finalDelay1; i += delayIncrement1) {
 			for (GameEngineCallback game : gameEngines) {
 				coins.getCoin1().flip();
 				coins.getCoin2().flip();
 				if(isSpinner) {
-				game.spinnerCoinUpdate(coins.getCoin1(), this);
-				game.spinnerCoinUpdate(coins.getCoin2(), this);
+					game.spinnerCoinUpdate(coins.getCoin1(), this);
+					game.spinnerCoinUpdate(coins.getCoin2(), this);
+				}
+				else {
+					game.playerCoinUpdate(player, coins.getCoin1(), this);
+					game.playerCoinUpdate(player, coins.getCoin2(), this);
+				}
 				try {
 					Thread.sleep(i);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				}
-				else {
-					game.playerCoinUpdate(player, coins.getCoin1(), this);
-					game.playerCoinUpdate(player, coins.getCoin2(), this);
-					try {
-						Thread.sleep(i);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
 			}
 		}
 		
-		//Applies the player results or the bet results dependent on the caller of the method
-		for (GameEngineCallback game : gameEngines) {
-			if(isSpinner) {
-			this.applyBetResults(coins);
-			game.spinnerResult(coins, this);
-			}
-			else {
-				game.playerResult(player, coins, this);
-				player.setResult(coins);
-				
-			}
-		}
+		//Logs the results
+		this.logResults(isSpinner, coins, player);
 		
 	}
 	
@@ -184,6 +172,21 @@ public class GameEngineImpl implements GameEngine {
 		if(delayIncrement1 > (finalDelay1 - initialDelay1) || delayIncrement2 > (finalDelay2 - initialDelay2)) {
 			throw new IllegalArgumentException("Error: Delay increment must not be larger than the difference of "
 					+ "final and initial delays.");
+		}
+	}
+	
+	//Applies the player results or the bet results dependent on the caller of the method
+	private void logResults(boolean isSpinner, CoinPair coins, Player player) {
+		for (GameEngineCallback game : gameEngines) {
+			if(isSpinner) {
+			this.applyBetResults(coins);
+			game.spinnerResult(coins, this);
+			}
+			else {
+				game.playerResult(player, coins, this);
+				player.setResult(coins);
+				
+			}
 		}
 	}
 }

@@ -1,10 +1,6 @@
 package model;
 
-import model.enumeration.RandomEnumGenerator;
-
 import java.util.Objects;
-
-import com.sun.xml.internal.ws.util.StringUtils;
 
 import model.enumeration.CoinFace;
 import model.interfaces.Coin;
@@ -17,7 +13,7 @@ public class CoinImpl implements Coin {
 	//Constructor of coins. Generates a random face for the coin.
 	public CoinImpl(int number) {
 		this.number = number;
-		this.face = RandomEnumGenerator.randomEnum(CoinFace.class);
+		this.face = Utilities.randomEnum(CoinFace.class);
 		
 	}
 
@@ -70,15 +66,8 @@ public class CoinImpl implements Coin {
 	@Override
 	// Returns details of coin as a string
 	public String toString() {
-		String coin = String.format("Coin %d: %s", this.getNumber(), this.titleConvert(this.getFace())); 
+		String coin = String.format("Coin %d: %s", this.getNumber(), Utilities.titleConvert(this.getFace())); 
 		return coin;
 	}
-	
-	// Converts coin faces to title case
-	private String titleConvert(CoinFace coinFace) {
-		String title = "" + coinFace;
-		return StringUtils.capitalize(title.toLowerCase());
-	}
-
 
 }

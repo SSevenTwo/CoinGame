@@ -78,6 +78,7 @@ public class test {
 	      
 	      // add logging callback
 	      gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
+	      gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
 
 	      // main loop to add players and place a bet
 	      int enumOrdinal = 0;
@@ -89,7 +90,7 @@ public class test {
 	         // NOTE: we are passing a different BetType each time!
 	         gameEngine.placeBet(player, 100, BetType.values()[enumOrdinal++ % BetType
 	            .values().length]);
-	         //gameEngine.spinPlayer(player, 100, 1000, 100, 50, 500, 50);
+	         gameEngine.spinPlayer(player, 100, 1000, 100, 50, 500, 50);
 	      }
 	      
 	      //Testing unmodifiable collection of players
@@ -113,6 +114,39 @@ public class test {
 	      for(Player player:players) {
 	    	  player.resetBet();
 	      }
+	      
+//	      for (Player player : players)
+//	      {
+//	         gameEngine.addPlayer(player);
+//	         
+//	         // mod with BetType length so we always stay in range even if num players increases
+//	         // NOTE: we are passing a different BetType each time!
+//	         gameEngine.placeBet(player, 100, BetType.values()[enumOrdinal++ % BetType
+//	            .values().length]);
+//	         gameEngine.spinPlayer(player, 100, 1000, 100, 50, 500, 50);
+//	      }
+//	      logger.log(Level.INFO, "SPINNING ...");
+//	      // OutputTrace.pdf was generated with these parameter values (using only first 3 params as per spec)
+//	      gameEngine.spinSpinner(100, 1000, 200, 50, 500, 25);
+//	      
+//	      // TODO reset bets for next round if you were playing again
+//	      for(Player player:players) {
+//	    	  player.resetBet();
+//	      }
+//	      
+//	      for (Player player : players)
+//	      {
+//	         gameEngine.addPlayer(player);
+//	         
+//	         // mod with BetType length so we always stay in range even if num players increases
+//	         // NOTE: we are passing a different BetType each time!
+//	         gameEngine.placeBet(player, 100, BetType.values()[enumOrdinal++ % BetType
+//	            .values().length]);
+//	         gameEngine.spinPlayer(player, 100, 1000, 100, 50, 500, 50);
+//	      }
+//	      logger.log(Level.INFO, "SPINNING ...");
+//	      // OutputTrace.pdf was generated with these parameter values (using only first 3 params as per spec)
+//	      gameEngine.spinSpinner(100, 1000, 200, 50, 500, 25);
 
 	}
 
