@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import model.enumeration.BetType;
 import model.interfaces.CoinPair;
@@ -12,8 +11,8 @@ import view.interfaces.GameEngineCallback;
 
 public class GameEngineImpl implements GameEngine {
 
-	private List<Player> players;
-	private List<GameEngineCallback> gameEngines;
+	private Collection<Player> players;
+	private Collection<GameEngineCallback> gameEngines;
 
 	//Constructor of GameEngine
 	public GameEngineImpl() {

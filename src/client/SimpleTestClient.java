@@ -68,12 +68,20 @@ public class SimpleTestClient
          // NOTE: we are passing a different BetType each time!
          gameEngine.placeBet(player, 100, BetType.values()[enumOrdinal++ % BetType
             .values().length]);
-         gameEngine.spinPlayer(player, 100, 1000, 100, 50, 500, 50);
+         try {
+        	 gameEngine.spinPlayer(player, -100, 1000, 100, 50, 500, 50);
+         } catch (Exception e) {
+        	 System.out.println(e.getMessage());
+         }
       }
 
       logger.log(Level.INFO, "SPINNING ...");
       // OutputTrace.pdf was generated with these parameter values (using only first 3 params as per spec)
-      gameEngine.spinSpinner(100, 1000, 200, 50, 500, 25);
+      try {
+    	  gameEngine.spinSpinner(100, 1000, 200, 50, 500, 25);
+      } catch (Exception e) {
+    	  System.out.println(e.getMessage());
+      }
 
       // TODO reset bets for next round if you were playing again
       for(Player player:players) {
@@ -83,5 +91,4 @@ public class SimpleTestClient
 }
 
 //Notes to self:
-//Can we create new methods?
 //What should happen if the player goes -ve?
