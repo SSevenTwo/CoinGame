@@ -69,7 +69,7 @@ public class SimpleTestClient
          gameEngine.placeBet(player, 100, BetType.values()[enumOrdinal++ % BetType
             .values().length]);
          try {
-        	 gameEngine.spinPlayer(player, -100, 1000, 100, 50, 500, 50);
+        	 gameEngine.spinPlayer(player, 100, 1000, 100, 50, 500, 50);
          } catch (Exception e) {
         	 System.out.println(e.getMessage());
          }
@@ -90,5 +90,3 @@ public class SimpleTestClient
    }
 }
 
-//Notes to self:
-//What should happen if the player goes -ve?

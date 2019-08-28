@@ -3,11 +3,11 @@ package view;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Utilities;
 import model.interfaces.Coin;
 import model.interfaces.CoinPair;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
+import model.util.Utilities;
 import view.interfaces.GameEngineCallback;
 
 /**
@@ -49,7 +49,7 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 	@Override
 	// Logs the final result of the spinner and updates the final results of the players bets
 	public void spinnerResult(CoinPair coinPair, GameEngine engine) {
-		logger.log(Level.INFO, String.format("Spinner, final result: %s", coinPair));
+		logger.log(Level.FINE, String.format("Spinner, final result: %s", coinPair));
 		String message = "";
 		for(Player player: engine.getAllPlayers()) {
 			message += player + "\n";

@@ -97,14 +97,16 @@ public class SimplePlayer implements Player {
 	}
 
 	@Override
-	// Sets the 
+	// Sets the result of the player
 	public void setResult(CoinPair coinPair) {
 		this.coin = coinPair;
 	}
 	
+	// Returns string detailing player stats and results
 	@Override
 	public String toString() {
-		return String.format("Player: id= this.id, name= this.name, bet= this.bet, betType= this.betType, points= this.points, RESULT .. this.coin");
+		return String.format("Player: id= %s, name= %s, bet= %d, betType= %s, points= %d, RESULT .. %s"
+				,this.id,this.name,this.bet,this.betType,this.points,this.coin);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import model.enumeration.CoinFace;
 import model.interfaces.Coin;
+import model.util.Utilities;
 
 public class CoinImpl implements Coin {
 	
