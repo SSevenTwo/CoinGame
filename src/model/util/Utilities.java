@@ -10,9 +10,9 @@ public class Utilities {
 	private static Random random = new Random();
 	
 	// Returns a random enum
-	 public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
-	        int x = random.nextInt(clazz.getEnumConstants().length);
-	        return clazz.getEnumConstants()[x];
+	 public static <T extends Enum<?>> T randomEnum(Class<T> coinFace){
+	        int number = random.nextInt(coinFace.getEnumConstants().length);
+	        return coinFace.getEnumConstants()[number];
 	    }
 	 
 	// Converts coin faces to title case
